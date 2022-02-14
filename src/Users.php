@@ -4,6 +4,7 @@ namespace CarloNicora\Minimalism\Services\Users;
 use CarloNicora\Minimalism\Abstracts\AbstractService;
 use CarloNicora\Minimalism\Exceptions\MinimalismException;
 use CarloNicora\Minimalism\Factories\ServiceFactory;
+use CarloNicora\Minimalism\Interfaces\Encrypter\Interfaces\EncrypterInterface;
 use CarloNicora\Minimalism\Interfaces\Security\Interfaces\SecurityInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserRoleInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserServiceInterface;
@@ -20,10 +21,12 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
 
     /**
      * @param Path $path
+     * @param EncrypterInterface $encrypter
      * @param SecurityInterface $authorisation
      */
     public function __construct(
         private Path $path,
+        private EncrypterInterface $encrypter,
         private SecurityInterface $authorisation,
     )
     {
@@ -53,9 +56,31 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
         int $userId,
     ): string
     {
-        $user = $this->objectFactory->create(UserIO::class)->readById($userId);
+        return $this->path->getUrl()
+            . UsersDictionary::User->getEndpoint()
+            . '/' . $this->encrypter->encryptId($userId);
+    }
 
-        return $this->getUserUrl($user);
+    /**
+     * @param User[] $users
+     * @return string
+     * @throws Exception
+     */
+    public function getUserUrlByIds(
+        array $users,
+    ): string
+    {
+        $response = $this->path->getUrl()
+            . UsersDictionary::User->getEndpoint()
+            . '/';
+
+        $separator = '?';
+        foreach ($users as $user){
+            $response .= $separator . 'userIds[]=' . $this->encrypter->encryptId($user->getId());
+            $separator = '&';
+        }
+
+        return $response;
     }
 
     /**
