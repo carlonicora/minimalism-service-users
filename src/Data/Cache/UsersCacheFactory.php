@@ -36,11 +36,11 @@ class UsersCacheFactory extends CacheBuilderFactory
     }
 
     /**
-     * @param int $username
+     * @param string $username
      * @return CacheBuilder
      */
     public static function username(
-        int $username,
+        string $username,
     ): CacheBuilder
     {
         return self::create(
@@ -50,11 +50,11 @@ class UsersCacheFactory extends CacheBuilderFactory
     }
 
     /**
-     * @param int $username
+     * @param string $username
      * @return CacheBuilder
      */
     public static function privateUsername(
-        int $username,
+        string $username,
     ): CacheBuilder
     {
         return self::create(
@@ -64,11 +64,11 @@ class UsersCacheFactory extends CacheBuilderFactory
     }
 
     /**
-     * @param int $email
+     * @param string $email
      * @return CacheBuilder
      */
     public static function email(
-        int $email,
+        string $email,
     ): CacheBuilder
     {
         return self::create(

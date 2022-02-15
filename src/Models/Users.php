@@ -37,7 +37,7 @@ class Users extends AbstractUsersModel
         }
 
         if ($userData === null && $userId !== null) {
-            $userData = $this->objectFactory->create(UserIO::class)->readByUserId(
+            $userData = $this->objectFactory->create(UserIO::class)->readById(
                 userId: $userId,
             );
         }
@@ -70,11 +70,11 @@ class Users extends AbstractUsersModel
         PositionedEncryptedParameter $userId,
     ): HttpCode
     {
-        if ($userId->getValue() !== $this->authorisation->getUserId()){
-            throw new MinimalismException(status: HttpCode::Unauthorized, message: 'Unauthorized');
-        }
-
         $user = $this->objectFactory->create(UserIO::class)->readById($userId->getValue());
+
+        if ($user->getId() !== $this->authorisation->getUserId()){
+            throw new MinimalismException(status: HttpCode::Forbidden, message: 'Forbidden');
+        }
 
         $this->objectFactory->create(UserIO::class)->delete($user);
 

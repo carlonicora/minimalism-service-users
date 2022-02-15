@@ -22,6 +22,9 @@ enum UsersTable
     case password;
 
     #[SqlField]
+    case avatar;
+
+    #[SqlField]
     case meta;
 
     #[SqlField(fieldOption: FieldOption::TimeCreate)]

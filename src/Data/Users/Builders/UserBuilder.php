@@ -26,6 +26,7 @@ class UserBuilder extends AbstractUsersBuilder
         );
 
         $response->attributes->add(name: 'username', value: $data->getUsername());
+        $response->attributes->add(name: 'avatar', value: $data->getAvatar());
 
         $response->links->add(
             link: new Link(
