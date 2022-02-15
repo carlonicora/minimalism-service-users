@@ -42,9 +42,11 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
         ServiceFactory $services,
     ): void
     {
-        $this->user = $this->objectFactory->create(UserIO::class)->readById(
-            userId: $this->authorisation->getUserId(),
-        );
+        if ($this->authorisation->getUserId() !== null) {
+            $this->user = $this->objectFactory->create(UserIO::class)->readById(
+                userId: $this->authorisation->getUserId(),
+            );
+        }
     }
 
     /**

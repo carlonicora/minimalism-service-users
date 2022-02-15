@@ -34,13 +34,13 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface
     #[DbField(fieldType: DbFieldType::Array)]
     private array $meta=[];
 
-    /** @var int|null  */
+    /** @var int */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private ?int $createdAt=null;
+    private int $createdAt;
 
-    /** @var int|null  */
+    /** @var int */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private ?int $updatedAt=null;
+    private int $updatedAt;
 
     /** @return int */
     public function getId(): int{return $this->id;}
@@ -84,9 +84,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface
      */
     public function addMeta(string $metaId, mixed $value): void{$this->meta[$metaId] = $value;}
 
-    /** @return int|null */
-    public function getCreatedAt(): ?int{return $this->createdAt;}
+    /** @return int */
+    public function getCreatedAt(): int{return $this->createdAt;}
 
-    /** @return int|null */
-    public function getUpdatedAt(): ?int{return $this->updatedAt;}
+    /** @return int */
+    public function getUpdatedAt(): int{return $this->updatedAt;}
 }

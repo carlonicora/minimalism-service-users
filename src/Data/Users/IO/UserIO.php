@@ -7,6 +7,7 @@ use CarloNicora\Minimalism\Services\Users\Data\Abstracts\AbstractUserIO;
 use CarloNicora\Minimalism\Services\Users\Data\Cache\UsersCacheFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Databases\UsersTable;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\User;
+use Exception;
 
 class UserIO extends AbstractUserIO
 {
@@ -104,5 +105,24 @@ class UserIO extends AbstractUserIO
         $this->cache?->invalidate(
             builder: UsersCacheFactory::privateUsername($user->getUsername()),
         );
+    }
+
+    /**
+     * @param User $user
+     * @throws Exception
+     */
+    public function delete(
+        User $user,
+    ): void
+    {
+        $this->data->delete(
+            queryFactory: $user,
+            cacheBuilder: UsersCacheFactory::user($user->getId()),
+        );
+
+        $this->cache?->invalidate(UsersCacheFactory::privateUser($user->getId()));
+        $this->cache?->invalidate(UsersCacheFactory::email($user->getEmail()));
+        $this->cache?->invalidate(UsersCacheFactory::username($user->getUsername()));
+        $this->cache?->invalidate(UsersCacheFactory::privateUsername($user->getUsername()));
     }
 }

@@ -7,29 +7,25 @@ use CarloNicora\Minimalism\Services\Users\Data\Cache\UsersCacheFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Builders\PrivateUserBuilder;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Builders\UserBuilder;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\User;
-use CarloNicora\Minimalism\Services\Users\Data\Users\IO\UserIO;
 use Exception;
 
 class UserResourceFactory extends AbstractUserResourceFactory
 {
     /**
-     * @param int $userId
+     * @param User $user
      * @return ResourceObject
      * @throws Exception
      */
-    public function byId(
-        int $userId,
+    public function byData(
+        User $user,
     ): ResourceObject
     {
-        /** @var User $data */
-        $data = $this->objectFactory->create(UserIO::class)->readById($userId);
-
-        $isPrivateData = $data->getId() === $this->authorisation->getUserId();
+        $isPrivateData = $user->getId() === $this->authorisation->getUserId();
 
         return $this->builder->buildResource(
             builderClass: $isPrivateData ? PrivateUserBuilder::class : UserBuilder::class,
-            data: $data,
-            cacheBuilder: $isPrivateData ? UsersCacheFactory::privateUser($userId) : UsersCacheFactory::user($userId),
+            data: $user,
+            cacheBuilder: $isPrivateData ? UsersCacheFactory::privateUser($user->getId()) : UsersCacheFactory::user($user->getId()),
         );
     }
 }
