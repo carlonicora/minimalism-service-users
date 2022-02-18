@@ -1,7 +1,7 @@
 {
   "name": "carlonicora/minimalism-service-users",
   "description": "Users service for minimalism",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta5",
   "homepage": "https://carlonicora.com",
   "time": "2022-02-14",
   "license": "MIT",
@@ -26,6 +26,7 @@
     "carlonicora/minimalism-interface-security": "~1.0",
     "carlonicora/minimalism-interface-user": "~1.0",
     "carlonicora/minimalism-service-cacher": "~4.0",
+    "carlonicora/minimalism-service-datavalidator": "~1.0",
     "carlonicora/minimalism-service-encrypter": "~4.0",
     "carlonicora/minimalism-service-mysql": "~6.0",
     "carlonicora/minimalism-service-resource-builder": "~1.0"
