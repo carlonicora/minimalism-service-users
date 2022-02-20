@@ -8,9 +8,10 @@ use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlDataObjectInterface;
 use CarloNicora\Minimalism\Services\MySQL\Traits\SqlDataObjectTrait;
 use CarloNicora\Minimalism\Services\ResourceBuilder\Interfaces\ResourceableDataInterface;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Databases\UsersTable;
+use CarloNicora\Minimalism\Services\Users\Data\Users\Interfaces\UserInterface;
 
 #[DbTable(tableClass: UsersTable::class)]
-class User implements SqlDataObjectInterface, ResourceableDataInterface
+class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInterface
 {
     use SqlDataObjectTrait;
 
@@ -45,6 +46,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface
     /** @var int */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
     private int $updatedAt;
+
+    /** @var bool  */
+    private bool $isSocialLogin=false;
 
     /** @return int */
     public function getId(): int{return $this->id;}
@@ -99,4 +103,31 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface
 
     /** @return int */
     public function getUpdatedAt(): int{return $this->updatedAt;}
+
+    /** @return bool */
+    public function isSocialLogin(): bool{return $this->isSocialLogin;}
+
+    /**
+     * @param bool $isSocialLogin
+     * @return void
+     */
+    public function setIsSocialLogin(bool $isSocialLogin): void{$this->isSocialLogin = $isSocialLogin;}
+
+    /**
+     * @return bool
+     */
+    public function isActive(
+    ): bool
+    {
+        return array_key_exists('activationDate', $this->meta) && $this->meta['activationDate'] > time();
+    }
+
+    /**
+     * @return void
+     */
+    public function setActive(
+    ): void
+    {
+        $this->meta['activationDate'] = time();
+    }
 }
