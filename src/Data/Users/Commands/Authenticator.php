@@ -112,10 +112,10 @@ class Authenticator implements AuthenticationInterface, SimpleObjectInterface
             try {
                 /** @noinspection UnusedFunctionResultInspection */
                 $this->objectFactory->create(UserIO::class)->readByUsername($username);
-                $validUsername = true;
-            } catch (MinimalismException) {
                 $usernameAttempts++;
                 $username = $initialUsername . '_' . $usernameAttempts;
+            } catch (MinimalismException) {
+                $validUsername = true;
             }
         } while (!$validUsername);
 
