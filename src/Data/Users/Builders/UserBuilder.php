@@ -12,10 +12,10 @@ use Exception;
 class UserBuilder extends AbstractUsersBuilder
 {
     /**
-     * @param User $data
-     * @return ResourceObject
-     * @throws Exception
-     */
+ * @param User $data
+ * @return ResourceObject
+ * @throws Exception
+ */
     public function buildResource(
         ResourceableDataInterface $data
     ): ResourceObject

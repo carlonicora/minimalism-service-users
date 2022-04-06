@@ -6,18 +6,22 @@ use CarloNicora\Minimalism\Exceptions\MinimalismException;
 use CarloNicora\Minimalism\Factories\ServiceFactory;
 use CarloNicora\Minimalism\Interfaces\Encrypter\Interfaces\EncrypterInterface;
 use CarloNicora\Minimalism\Interfaces\Security\Interfaces\SecurityInterface;
+use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserInterface;
+use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserLoaderInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserRoleInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserServiceInterface;
 use CarloNicora\Minimalism\Services\Path;
 use CarloNicora\Minimalism\Services\Users\Data\Dictionary\UsersDictionary;
+use CarloNicora\Minimalism\Services\Users\Data\Enums\UserRole;
+use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\MinimalismUser;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\User;
 use CarloNicora\Minimalism\Services\Users\Data\Users\IO\UserIO;
 use Exception;
 
-class Users extends AbstractService implements UserServiceInterface, UserRoleInterface
+class Users extends AbstractService implements UserServiceInterface, UserRoleInterface, UserLoaderInterface
 {
     /** @var User|null  */
-    private ?User $user=null;
+    private ?User $currentUser=null;
 
     /**
      * @param Path $path
@@ -43,7 +47,7 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
     ): void
     {
         if ($this->authorisation->getUserId() !== null) {
-            $this->user = $this->objectFactory->create(UserIO::class)->readById(
+            $this->currentUser = $this->objectFactory->create(UserIO::class)->readById(
                 userId: $this->authorisation->getUserId(),
             );
         }
@@ -107,7 +111,7 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
     ): void
     {
         if ($this->authorisation->isUser()) {
-            $this->user = $this->objectFactory->create(UserIO::class)->readById(
+            $this->currentUser = $this->objectFactory->create(UserIO::class)->readById(
                 userId: $this->authorisation->getUserId(),
             );
         }
@@ -119,7 +123,7 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
     public function getId(
     ): int
     {
-        return $this->user->getId();
+        return $this->currentUser->getId();
     }
 
     /**
@@ -132,7 +136,7 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
             return null;
         }
 
-        return $this->user->getEmail();
+        return $this->currentUser->getEmail();
     }
 
     /**
@@ -148,10 +152,10 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
         }
 
         if (strtolower($attributeName) === 'username') {
-            return $this->user->getUsername();
+            return $this->currentUser->getUsername();
         }
 
-        return $this->user->getSingleMeta($attributeName);
+        return $this->currentUser->getSingleMeta($attributeName);
     }
 
     /**
@@ -161,5 +165,63 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
     ): bool
     {
         return !$this->authorisation->isUser();
+    }
+
+    /**
+     * @param int $id
+     * @return UserInterface|null
+     * @throws MinimalismException
+     * @throws Exception
+     */
+    public function byId(int $id): ?UserInterface
+    {
+        $userIO = $this->objectFactory->create(className: UserIO::class);
+        return $this->buildMinimalismUser($userIO->readById($id));
+    }
+
+    /**
+     * @param string $email
+     * @return UserInterface|null
+     * @throws MinimalismException
+     * @throws Exception
+     */
+    public function byEmail(string $email): ?UserInterface
+    {
+        $userIO = $this->objectFactory->create(className: UserIO::class);
+        return $this->buildMinimalismUser($userIO->readByEmail($email));
+    }
+
+    /**
+     * @param string $userName
+     * @return UserInterface|null
+     * @throws MinimalismException
+     * @throws Exception
+     */
+    public function byUserName(string $userName): ?UserInterface
+    {
+        $userIO = $this->objectFactory->create(className: UserIO::class);
+        return $this->buildMinimalismUser($userIO->readByUsername($userName));
+    }
+
+    /**
+     * @param User $userDataObject
+     * @return MinimalismUser
+     */
+    private function buildMinimalismUser(
+        User $userDataObject
+    ): MinimalismUser
+    {
+        return new MinimalismUser(
+            // TODO how to define a role by user id?
+            role: UserRole::Visitor,
+            id: $userDataObject->getId(),
+            userName: $userDataObject->getUsername(),
+            email: $userDataObject->getEmail(),
+            attributes: [
+                'avatar' => $userDataObject->getAvatar(),
+                'createdAt' => $userDataObject->getCreatedAt(),
+                'updatedAt' => $userDataObject->getUpdatedAt(),
+            ]
+        );
     }
 }
