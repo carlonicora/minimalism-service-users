@@ -2,12 +2,13 @@
 namespace CarloNicora\Minimalism\Services\Users\Data\Users\IO;
 
 use CarloNicora\Minimalism\Exceptions\MinimalismException;
+use CarloNicora\Minimalism\Interfaces\Cache\Interfaces\CacheBuilderInterface;
+use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlDataObjectInterface;
 use CarloNicora\Minimalism\Services\MySQL\Factories\SqlQueryFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Abstracts\AbstractUserIO;
 use CarloNicora\Minimalism\Services\Users\Data\Cache\UsersCacheFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Databases\UsersTable;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\User;
-use Exception;
 
 class UserIO extends AbstractUserIO
 {
@@ -65,64 +66,54 @@ class UserIO extends AbstractUserIO
         );
     }
 
-    /**
-     * @param User $user
-     * @return User
-     */
-    public function create(
-        User $user
-    ): User
-    {
-        return $this->data->create(
-            queryFactory: $user,
-        );
-    }
-
-    /**
-     * @param User $user
+   /**
+     * @param SqlDataObjectInterface $dataObject
+     * @param CacheBuilderInterface|null $cache
      */
     public function update(
-        User $user
+        SqlDataObjectInterface $dataObject,
+        ?CacheBuilderInterface $cache = null
     ): void
     {
-        $this->data->update(
-            queryFactory: $user,
-            cacheBuilder: UsersCacheFactory::user($user->getId()),
+        parent::update(
+            dataObject: $dataObject,
+            cache: UsersCacheFactory::user($dataObject->getId()),
         );
 
         $this->cache?->invalidate(
-            builder: UsersCacheFactory::privateUser($user->getId()),
+            builder: UsersCacheFactory::privateUser($dataObject->getId()),
         );
 
         $this->cache?->invalidate(
-            builder: UsersCacheFactory::email($user->getEmail()),
+            builder: UsersCacheFactory::email($dataObject->getEmail()),
         );
 
         $this->cache?->invalidate(
-            builder: UsersCacheFactory::username($user->getUsername()),
+            builder: UsersCacheFactory::username($dataObject->getUsername()),
         );
 
         $this->cache?->invalidate(
-            builder: UsersCacheFactory::privateUsername($user->getUsername()),
+            builder: UsersCacheFactory::privateUsername($dataObject->getUsername()),
         );
     }
 
     /**
-     * @param User $user
-     * @throws Exception
+     * @param User|SqlDataObjectInterface $dataObject
+     * @param CacheBuilderInterface|null $cache
      */
     public function delete(
-        User $user,
+        User|SqlDataObjectInterface $dataObject,
+        ?CacheBuilderInterface $cache = null
     ): void
     {
-        $this->data->delete(
-            queryFactory: $user,
-            cacheBuilder: UsersCacheFactory::user($user->getId()),
+        parent::delete(
+            dataObject: $dataObject,
+            cache: UsersCacheFactory::user($dataObject->getId()),
         );
 
-        $this->cache?->invalidate(UsersCacheFactory::privateUser($user->getId()));
-        $this->cache?->invalidate(UsersCacheFactory::email($user->getEmail()));
-        $this->cache?->invalidate(UsersCacheFactory::username($user->getUsername()));
-        $this->cache?->invalidate(UsersCacheFactory::privateUsername($user->getUsername()));
+        $this->cache?->invalidate(UsersCacheFactory::privateUser($dataObject->getId()));
+        $this->cache?->invalidate(UsersCacheFactory::email($dataObject->getEmail()));
+        $this->cache?->invalidate(UsersCacheFactory::username($dataObject->getUsername()));
+        $this->cache?->invalidate(UsersCacheFactory::privateUsername($dataObject->getUsername()));
     }
 }

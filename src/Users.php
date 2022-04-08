@@ -8,17 +8,15 @@ use CarloNicora\Minimalism\Interfaces\Encrypter\Interfaces\EncrypterInterface;
 use CarloNicora\Minimalism\Interfaces\Security\Interfaces\SecurityInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserLoaderInterface;
-use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserRoleInterface;
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserServiceInterface;
 use CarloNicora\Minimalism\Services\Path;
 use CarloNicora\Minimalism\Services\Users\Data\Dictionary\UsersDictionary;
-use CarloNicora\Minimalism\Services\Users\Data\Enums\UserRole;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\MinimalismUser;
 use CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects\User;
 use CarloNicora\Minimalism\Services\Users\Data\Users\IO\UserIO;
 use Exception;
 
-class Users extends AbstractService implements UserServiceInterface, UserRoleInterface, UserLoaderInterface
+class Users extends AbstractService implements UserServiceInterface, UserLoaderInterface
 {
     /** @var User|null  */
     private ?User $currentUser=null;
@@ -212,8 +210,6 @@ class Users extends AbstractService implements UserServiceInterface, UserRoleInt
     ): MinimalismUser
     {
         return new MinimalismUser(
-            // TODO how to define a role by user id?
-            role: UserRole::Visitor,
             id: $userDataObject->getId(),
             userName: $userDataObject->getUsername(),
             email: $userDataObject->getEmail(),

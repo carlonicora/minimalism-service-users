@@ -3,20 +3,17 @@
 namespace CarloNicora\Minimalism\Services\Users\Data\Users\DataObjects;
 
 use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserInterface;
-use CarloNicora\Minimalism\Interfaces\User\Interfaces\UserRoleInterface;
 
 class MinimalismUser implements UserInterface
 {
 
     /**
-     * @param UserRoleInterface $role
      * @param int $id
      * @param string $userName
      * @param string $email
      * @param array $attributes
      */
     public function __construct(
-        private UserRoleInterface $role,
         private int $id,
         private string $userName,
         private string $email,
@@ -56,13 +53,5 @@ class MinimalismUser implements UserInterface
     public function getAttribute(string $attributeName): mixed
     {
         return $this->attributes[$attributeName] ?? null;
-    }
-
-    /**
-     * @return UserRoleInterface
-     */
-    public function getRole(): UserRoleInterface
-    {
-        return $this->role;
     }
 }
