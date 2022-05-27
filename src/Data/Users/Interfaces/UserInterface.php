@@ -110,7 +110,7 @@ interface UserInterface
      * @return int
      */
     public function getUpdatedAt(
-    ): int;
+    ): int|null;
 
     /**
      * @return bool

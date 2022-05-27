@@ -43,9 +43,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     #[DbField(fieldType: DbFieldType::IntDateTime)]
     private int $createdAt;
 
-    /** @var int */
+    /** @var int|null */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private int $updatedAt;
+    private int|null $updatedAt = null;
 
     /** @var bool  */
     private bool $isSocialLogin=false;
@@ -101,8 +101,8 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     /** @return int */
     public function getCreatedAt(): int{return $this->createdAt;}
 
-    /** @return int */
-    public function getUpdatedAt(): int{return $this->updatedAt;}
+    /** @return int|null */
+    public function getUpdatedAt(): int|null{return $this->updatedAt;}
 
     /** @return bool */
     public function isSocialLogin(): bool{return $this->isSocialLogin;}

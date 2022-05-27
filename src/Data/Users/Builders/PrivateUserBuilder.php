@@ -21,12 +21,15 @@ class PrivateUserBuilder extends UserBuilder
 
         $response->attributes->add(name: 'email', value: $data->getEmail());
 
+        $metas = ['created' => date(format: 'Y-m-d H:i:s', timestamp: $data->getCreatedAt())];
+
+        if ($data->getUpdatedAt() !== null) {
+            $metas ['updated'] = date(format: 'Y-m-d H:i:s', timestamp: $data->getUpdatedAt());
+        }
+
         $response->meta->add(
             name: 'dates',
-            value: [
-                'created' => date('Y-m-d H:i:s', $data->getCreatedAt()),
-                'updated' => date('Y-m-d H:i:s', $data->getUpdatedAt()),
-            ]
+            value: $metas
         );
 
         return $response;
