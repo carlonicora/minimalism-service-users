@@ -27,9 +27,9 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
      * @param SecurityInterface $authorisation
      */
     public function __construct(
-        private Path $path,
-        private EncrypterInterface $encrypter,
-        private SecurityInterface $authorisation,
+        private Path                        $path,
+        private readonly EncrypterInterface $encrypter,
+        private SecurityInterface           $authorisation,
     )
     {
     }

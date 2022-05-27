@@ -4,6 +4,7 @@ namespace CarloNicora\Minimalism\Services\Users\Data\Users\IO;
 use CarloNicora\Minimalism\Exceptions\MinimalismException;
 use CarloNicora\Minimalism\Interfaces\Cache\Interfaces\CacheBuilderInterface;
 use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlDataObjectInterface;
+use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlQueryFactoryInterface;
 use CarloNicora\Minimalism\Services\MySQL\Factories\SqlQueryFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Abstracts\AbstractUserIO;
 use CarloNicora\Minimalism\Services\Users\Data\Cache\UsersCacheFactory;
@@ -66,13 +67,13 @@ class UserIO extends AbstractUserIO
         );
     }
 
-   /**
-     * @param SqlDataObjectInterface $dataObject
+    /**
+     * @param SqlDataObjectInterface|SqlQueryFactoryInterface|array $dataObject
      * @param CacheBuilderInterface|null $cache
      */
     public function update(
-        SqlDataObjectInterface $dataObject,
-        ?CacheBuilderInterface $cache = null
+        SqlDataObjectInterface|SqlQueryFactoryInterface|array $dataObject,
+        ?CacheBuilderInterface                                $cache = null
     ): void
     {
         parent::update(
@@ -98,22 +99,22 @@ class UserIO extends AbstractUserIO
     }
 
     /**
-     * @param User|SqlDataObjectInterface $dataObject
+     * @param User|SqlDataObjectInterface|SqlQueryFactoryInterface|array $dataObjectOrQueryFactory
      * @param CacheBuilderInterface|null $cache
      */
     public function delete(
-        User|SqlDataObjectInterface $dataObject,
-        ?CacheBuilderInterface $cache = null
+        User|SqlDataObjectInterface|SqlQueryFactoryInterface|array $dataObjectOrQueryFactory,
+        ?CacheBuilderInterface                                     $cache = null
     ): void
     {
         parent::delete(
-            dataObject: $dataObject,
-            cache: UsersCacheFactory::user($dataObject->getId()),
+            dataObjectOrQueryFactory: $dataObjectOrQueryFactory,
+            cache: UsersCacheFactory::user($dataObjectOrQueryFactory->getId()),
         );
 
-        $this->cache?->invalidate(UsersCacheFactory::privateUser($dataObject->getId()));
-        $this->cache?->invalidate(UsersCacheFactory::email($dataObject->getEmail()));
-        $this->cache?->invalidate(UsersCacheFactory::username($dataObject->getUsername()));
-        $this->cache?->invalidate(UsersCacheFactory::privateUsername($dataObject->getUsername()));
+        $this->cache?->invalidate(UsersCacheFactory::privateUser($dataObjectOrQueryFactory->getId()));
+        $this->cache?->invalidate(UsersCacheFactory::email($dataObjectOrQueryFactory->getEmail()));
+        $this->cache?->invalidate(UsersCacheFactory::username($dataObjectOrQueryFactory->getUsername()));
+        $this->cache?->invalidate(UsersCacheFactory::privateUsername($dataObjectOrQueryFactory->getUsername()));
     }
 }

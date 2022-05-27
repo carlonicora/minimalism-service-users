@@ -20,8 +20,8 @@ class Authenticator implements AuthenticationInterface, SimpleObjectInterface
      * @param SqlInterface $data
      */
     public function __construct(
-        private ObjectFactory $objectFactory,
-        private SqlInterface $data,
+        private readonly ObjectFactory $objectFactory,
+        private readonly SqlInterface  $data,
     )
     {
     }

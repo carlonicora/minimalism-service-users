@@ -14,10 +14,10 @@ class MinimalismUser implements UserInterface
      * @param array $attributes
      */
     public function __construct(
-        private int $id,
-        private string $userName,
-        private string $email,
-        private array $attributes = []
+        private readonly int    $id,
+        private readonly string $userName,
+        private readonly string $email,
+        private readonly array  $attributes = []
     )
     {
     }
@@ -31,17 +31,17 @@ class MinimalismUser implements UserInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getUserName(): int
+    public function getUserName(): string
     {
         return $this->userName;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getEmail(): int
+    public function getEmail(): string
     {
         return $this->email;
     }
