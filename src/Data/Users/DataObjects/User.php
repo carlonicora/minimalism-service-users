@@ -35,9 +35,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     #[DbField]
     private ?string $avatar=null;
 
-    /** @var array  */
+    /** @var array|null  */
     #[DbField(fieldType: DbFieldType::Array)]
-    private array $meta=[];
+    private array|null $meta=null;
 
     /** @var int */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
@@ -81,7 +81,7 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     public function setAvatar(?string $avatar): void{$this->avatar = $avatar;}
 
     /** @return array */
-    public function getMeta(): array{return $this->meta;}
+    public function getMeta(): array{return $this->meta ?? [];}
 
     /**
      * @param string $metaId
