@@ -44,11 +44,7 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
         ServiceFactory $services,
     ): void
     {
-        if ($this->authorisation->getUserId() !== null) {
-            $this->currentUser = $this->objectFactory->create(UserIO::class)->readById(
-                userId: $this->authorisation->getUserId(),
-            );
-        }
+        $this->load();
     }
 
     /**
