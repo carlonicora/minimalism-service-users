@@ -1,4 +1,5 @@
 <?php
+
 namespace CarloNicora\Minimalism\Services\Users\Data\Users\Interfaces;
 
 interface UserInterface
@@ -6,8 +7,7 @@ interface UserInterface
     /**
      * @return int
      */
-    public function getId(
-    ): int;
+    public function getId(): int;
 
     /**
      * @param int $id
@@ -20,8 +20,7 @@ interface UserInterface
     /**
      * @return string
      */
-    public function getEmail(
-    ): string;
+    public function getEmail(): string;
 
     /**
      * @param string $email
@@ -34,8 +33,7 @@ interface UserInterface
     /**
      * @return string
      */
-    public function getUsername(
-    ): string;
+    public function getUsername(): string;
 
     /**
      * @param string $username
@@ -48,8 +46,7 @@ interface UserInterface
     /**
      * @return string|null
      */
-    public function getPassword(
-    ): ?string;
+    public function getPassword(): ?string;
 
     /**
      * @param string|null $password
@@ -75,8 +72,7 @@ interface UserInterface
     /**
      * @return array
      */
-    public function getMeta(
-    ): array;
+    public function getMeta(): array;
 
     /**
      * @param string $metaId
@@ -97,38 +93,33 @@ interface UserInterface
      */
     public function addMeta(
         string $metaId,
-        mixed $value,
+        mixed  $value,
     ): void;
 
     /**
      * @return int
      */
-    public function getCreatedAt(
-    ): int;
+    public function getCreatedAt(): int;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getUpdatedAt(
-    ): int|null;
+    public function getUpdatedAt(): int|null;
 
     /**
      * @return bool
      */
-    public function isActive(
-    ): bool;
+    public function isActive(): bool;
 
     /**
      * @return void
      */
-    public function setActive(
-    ): void;
+    public function setActive(): void;
 
     /**
      * @return bool
      */
-    public function isSocialLogin(
-    ): bool;
+    public function isSocialLogin(): bool;
 
     /**
      * @param bool $isSocialLogin

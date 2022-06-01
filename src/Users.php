@@ -1,4 +1,5 @@
 <?php
+
 namespace CarloNicora\Minimalism\Services\Users;
 
 use CarloNicora\Minimalism\Abstracts\AbstractService;
@@ -18,8 +19,8 @@ use Exception;
 
 class Users extends AbstractService implements UserServiceInterface, UserLoaderInterface
 {
-    /** @var User|null  */
-    private ?User $currentUser=null;
+    /** @var User|null */
+    private User|null $currentUser = null;
 
     /**
      * @param Path $path
@@ -27,9 +28,9 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
      * @param SecurityInterface $authorisation
      */
     public function __construct(
-        private Path                        $path,
+        private readonly Path               $path,
         private readonly EncrypterInterface $encrypter,
-        private SecurityInterface           $authorisation,
+        private readonly SecurityInterface  $authorisation,
     )
     {
     }
@@ -75,8 +76,8 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
             . '/';
 
         $separator = '?';
-        foreach ($users as $user){
-            $response .= $separator . 'userIds[]=' . $this->encrypter->encryptId($user->getId());
+        foreach ($users as $user) {
+            $response  .= $separator . 'userIds[]=' . $this->encrypter->encryptId($user->getId());
             $separator = '&';
         }
 
@@ -101,8 +102,7 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
      * @throws MinimalismException
      * @throws Exception
      */
-    public function load(
-    ): void
+    public function load(): void
     {
         if ($this->authorisation->isUser()) {
             $this->currentUser = $this->objectFactory->create(UserIO::class)->readById(
@@ -114,8 +114,7 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
     /**
      * @return int
      */
-    public function getId(
-    ): int
+    public function getId(): int
     {
         return $this->currentUser->getId();
     }
@@ -123,10 +122,9 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
     /**
      * @return string|null
      */
-    public function getEmail(
-    ): ?string
+    public function getEmail(): ?string
     {
-        if (!$this->authorisation->isUser()) {
+        if (! $this->authorisation->isUser()) {
             return null;
         }
 
@@ -141,7 +139,7 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
         string $attributeName,
     ): mixed
     {
-        if (!$this->authorisation->isUser()) {
+        if (! $this->authorisation->isUser()) {
             return null;
         }
 
@@ -155,10 +153,9 @@ class Users extends AbstractService implements UserServiceInterface, UserLoaderI
     /**
      * @return bool
      */
-    public function isVisitor(
-    ): bool
+    public function isVisitor(): bool
     {
-        return !$this->authorisation->isUser();
+        return ! $this->authorisation->isUser();
     }
 
     /**
