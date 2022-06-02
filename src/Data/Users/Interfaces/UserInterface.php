@@ -97,9 +97,9 @@ interface UserInterface
     ): void;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCreatedAt(): int;
+    public function getCreatedAt(): int|null;
 
     /**
      * @return int|null

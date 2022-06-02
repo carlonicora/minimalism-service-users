@@ -40,9 +40,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     #[DbField(fieldType: DbFieldType::Array)]
     private array|null $meta = null;
 
-    /** @var int */
+    /** @var int|null */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private int $createdAt;
+    private int|null $createdAt = null;
 
     /** @var int|null */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
@@ -146,9 +146,9 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCreatedAt(): int
+    public function getCreatedAt(): int|null
     {
         return $this->createdAt;
     }
