@@ -1,12 +1,12 @@
 {
   "name": "carlonicora/minimalism-service-users",
   "description": "Users service for minimalism",
-  "version": "1.0.0-beta16",
+  "version": "1.0.0",
   "homepage": "https://carlonicora.com",
   "time": "2022-02-14",
   "license": "MIT",
   "type": "library",
-  "minimum-stability": "beta",
+  "minimum-stability": "stable",
   "authors": [
     {
       "name": "Carlo Nicora",
