@@ -22,5 +22,6 @@ abstract class AbstractUsersBuilder extends AbstractResourceBuilder
         protected readonly Users $users,
     )
     {
+        parent::__construct($this->encrypter);
     }
 }

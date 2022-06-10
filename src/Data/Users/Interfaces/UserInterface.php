@@ -99,22 +99,12 @@ interface UserInterface
     /**
      * @return int|null
      */
-    public function getCreatedAt(): int|null;
+    public function getCreatedAt(): ?int;
 
     /**
      * @return int|null
      */
-    public function getUpdatedAt(): int|null;
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool;
-
-    /**
-     * @return void
-     */
-    public function setActive(): void;
+    public function getUpdatedAt(): ?int;
 
     /**
      * @return bool

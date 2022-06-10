@@ -3,9 +3,9 @@ namespace CarloNicora\Minimalism\Services\Users\Data\Users\IO;
 
 use CarloNicora\Minimalism\Exceptions\MinimalismException;
 use CarloNicora\Minimalism\Interfaces\Cache\Interfaces\CacheBuilderInterface;
+use CarloNicora\Minimalism\Interfaces\Sql\Factories\SqlQueryFactory;
 use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlDataObjectInterface;
 use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlQueryFactoryInterface;
-use CarloNicora\Minimalism\Services\MySQL\Factories\SqlQueryFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Abstracts\AbstractUserIO;
 use CarloNicora\Minimalism\Services\Users\Data\Cache\UsersCacheFactory;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Databases\UsersTable;
@@ -68,7 +68,7 @@ class UserIO extends AbstractUserIO
     }
 
     /**
-     * @param SqlDataObjectInterface|SqlQueryFactoryInterface|array $dataObject
+     * @param User|SqlQueryFactoryInterface|array $dataObject
      * @param CacheBuilderInterface|null $cache
      */
     public function update(

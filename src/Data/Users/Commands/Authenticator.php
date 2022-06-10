@@ -153,10 +153,6 @@ class Authenticator implements AuthenticationInterface, SimpleObjectInterface
         User $user
     ): void
     {
-        $user->setActive();
-        $this->data->update(
-            queryFactory: $user,
-        );
     }
 
     /**

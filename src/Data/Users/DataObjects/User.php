@@ -6,7 +6,7 @@ use CarloNicora\Minimalism\Interfaces\Sql\Attributes\DbField;
 use CarloNicora\Minimalism\Interfaces\Sql\Attributes\DbTable;
 use CarloNicora\Minimalism\Interfaces\Sql\Enums\DbFieldType;
 use CarloNicora\Minimalism\Interfaces\Sql\Interfaces\SqlDataObjectInterface;
-use CarloNicora\Minimalism\Services\MySQL\Traits\SqlDataObjectTrait;
+use CarloNicora\Minimalism\Interfaces\Sql\Traits\SqlDataObjectTrait;
 use CarloNicora\Minimalism\Services\ResourceBuilder\Interfaces\ResourceableDataInterface;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Databases\UsersTable;
 use CarloNicora\Minimalism\Services\Users\Data\Users\Interfaces\UserInterface;
@@ -30,27 +30,23 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
 
     /** @var string|null */
     #[DbField]
-    private string|null $password = null;
+    private ?string $password = null;
 
     /** @var string|null */
     #[DbField]
-    private string|null $avatar = null;
+    private ?string $avatar = null;
 
     /** @var array|null */
     #[DbField(fieldType: DbFieldType::Array)]
-    private array|null $meta = null;
+    private ?array $meta = null;
 
     /** @var int|null */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private int|null $createdAt = null;
+    private ?int $createdAt=null;
 
     /** @var int|null */
     #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private int|null $activatedAt = null;
-
-    /** @var int|null */
-    #[DbField(fieldType: DbFieldType::IntDateTime)]
-    private int|null $updatedAt = null;
+    private ?int $updatedAt=null;
 
     /** @var bool */
     private bool $isSocialLogin = false;
@@ -146,31 +142,15 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getCreatedAt(): int|null
+    public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getActivatedAt(): int|null
-    {
-        return $this->activatedAt;
-    }
-
-    /**
-     * @param int|null $activatedAt
-     */
-    public function setActivatedAt(int|null $activatedAt = null): void
-    {
-        $this->activatedAt = $activatedAt;
-    }
-
     /** @return int|null */
-    public function getUpdatedAt(): int|null
+    public function getUpdatedAt(): ?int
     {
         return $this->updatedAt;
     }
@@ -188,21 +168,5 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
     public function setIsSocialLogin(bool $isSocialLogin): void
     {
         $this->isSocialLogin = $isSocialLogin;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return array_key_exists('activationDate', $this->meta) && $this->meta['activationDate'] > time();
-    }
-
-    /**
-     * @return void
-     */
-    public function setActive(): void
-    {
-        $this->meta['activationDate'] = time();
     }
 }

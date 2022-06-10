@@ -1,19 +1,19 @@
 <?php
 namespace CarloNicora\Minimalism\Services\Users\Data\Cache;
 
-use CarloNicora\Minimalism\Services\Cacher\Builders\CacheBuilder;
-use CarloNicora\Minimalism\Services\Cacher\Factories\CacheBuilderFactory;
+use CarloNicora\Minimalism\Interfaces\Cache\Abstracts\AbstractCacheBuilderFactory;
+use CarloNicora\Minimalism\Interfaces\Cache\Interfaces\CacheBuilderInterface;
 use CarloNicora\Minimalism\Services\Users\Data\Dictionary\UsersDictionary;
 
-class UsersCacheFactory extends CacheBuilderFactory
+class UsersCacheFactory extends AbstractCacheBuilderFactory
 {
     /**
      * @param int $userId
-     * @return CacheBuilder
+     * @return CacheBuilderInterface
      */
     public static function user(
         int $userId,
-    ): CacheBuilder
+    ): CacheBuilderInterface
     {
         return self::create(
             cacheName: UsersDictionary::User->getIdKey(),
@@ -23,11 +23,11 @@ class UsersCacheFactory extends CacheBuilderFactory
 
     /**
      * @param int $userId
-     * @return CacheBuilder
+     * @return CacheBuilderInterface
      */
     public static function privateUser(
         int $userId,
-    ): CacheBuilder
+    ): CacheBuilderInterface
     {
         return self::create(
             cacheName: UsersDictionary::User->getIdKey(),
@@ -37,11 +37,11 @@ class UsersCacheFactory extends CacheBuilderFactory
 
     /**
      * @param string $username
-     * @return CacheBuilder
+     * @return CacheBuilderInterface
      */
     public static function username(
         string $username,
-    ): CacheBuilder
+    ): CacheBuilderInterface
     {
         return self::create(
             cacheName: UsersDictionary::User->getIdKey(),
@@ -51,11 +51,11 @@ class UsersCacheFactory extends CacheBuilderFactory
 
     /**
      * @param string $username
-     * @return CacheBuilder
+     * @return CacheBuilderInterface
      */
     public static function privateUsername(
         string $username,
-    ): CacheBuilder
+    ): CacheBuilderInterface
     {
         return self::create(
             cacheName: UsersDictionary::User->getIdKey(),
@@ -65,11 +65,11 @@ class UsersCacheFactory extends CacheBuilderFactory
 
     /**
      * @param string $email
-     * @return CacheBuilder
+     * @return CacheBuilderInterface
      */
     public static function email(
         string $email,
-    ): CacheBuilder
+    ): CacheBuilderInterface
     {
         return self::create(
             cacheName: UsersDictionary::User->getIdKey(),
