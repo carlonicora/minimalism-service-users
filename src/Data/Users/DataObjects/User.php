@@ -149,6 +149,17 @@ class User implements SqlDataObjectInterface, ResourceableDataInterface, UserInt
         return $this->createdAt;
     }
 
+    /**
+     * @param int|null $createdAt
+     * @return void
+     */
+    public function setCreatedAt(
+        ?int $createdAt = null
+    ): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     /** @return int|null */
     public function getUpdatedAt(): ?int
     {
